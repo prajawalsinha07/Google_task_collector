@@ -1,0 +1,14 @@
+[
+    {
+        "title": "Task 1",
+        "content": "Complete project report",
+        "due": "2023-12-10",
+        "status": "Pending"
+    },
+    {
+        "title": "Task 2",
+        "content": "Prepare presentation slides",
+        "due": "2023-12-12",
+        "status": "In Progress"
+    }
+]
