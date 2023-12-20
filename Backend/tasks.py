@@ -1,7 +1,7 @@
 import pandas as pd
 from Google import Create_Service, convert_to_RFC_datetime
 
-CLIENT_SECRET_FILE = '<your secret file.json>'
+CLIENT_SECRET_FILE = './client_secret_789795652787-jg8ihuibu6dj9ctjn25o259v12nt2n25.apps.googleusercontent.com.json'
 API_NAME = 'tasks'
 API_VERSION = 'v1'
 SCOPES = ['https://www.googleapis.com/auth/tasks']
