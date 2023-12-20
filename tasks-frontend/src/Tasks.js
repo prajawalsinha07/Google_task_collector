@@ -4,9 +4,14 @@ function Tasks() {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/') //Adjust URL based on Flask server
+    // Fetch tasks from the Flask API
+    fetch('http://localhost:5000/api/tasks')
       .then(response => response.json())
-      .then(data => setTasks(data));
+      .then(data => setTasks(data))
+      .catch(error => {
+        // Handle any errors here
+        console.error('Error fetching tasks:', error);
+      });
   }, []);
 
   return (
@@ -14,12 +19,9 @@ function Tasks() {
       <h1>Tasks</h1>
       <ul>
         {tasks.map(task => (
-          <li key={task.title}>
-            <h2>{task.title}</h2>
-            <p>{task.content}</p>
-            <p>Due: {task.due}</p>
-            <p>Status: {task.status}</p>
-          </li>
+          <li key={task.taskID}>
+            {task.taskDescription} (State: {task.taskState})
+          </li> 
         ))}
       </ul>
     </div>
