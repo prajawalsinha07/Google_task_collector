@@ -24,6 +24,9 @@ for i in data["items"]:
     
     db.Add_Record(taskID, taskEtag, taskTitle, taskStatus, taskUpdated, taskDue, taskCompleted)
 
-db.Get_Records_All()
+records = db.Get_Records_All()
+for record in records:
+    print(record)
+
 db.Close_Connection()
 f.close()

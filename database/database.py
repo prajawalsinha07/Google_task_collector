@@ -91,12 +91,10 @@ class DatabaseClass:
     def Get_Records_All(self):
         sql_get_records_all_command = "SELECT * FROM Tasks"
         records = self._cursor.execute(sql_get_records_all_command).fetchall()
-        for record in records:
-            print(record)
+        return records
 
 
     def Get_Records_Status(self, taskStatus:str):
         sql_get_Records_Status_command = "SELECT * FROM Tasks WHERE taskStatus='" + taskStatus +"';"
         records = self._cursor.execute(sql_get_Records_Status_command).fetchall()
-        for record in records:
-            print(record)
+        return records
