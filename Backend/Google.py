@@ -25,7 +25,13 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
 
     if not cred or not cred.valid:
         if cred and cred.expired and cred.refresh_token:
-            cred.refresh(Request())
+            try:
+                cred.refresh(Request())
+            except Exception as e:
+                print(f"Error refreshing credentials: {e}")
+    # Additional error handling logic here (e.g., re-authentication)
+
+
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
                 CLIENT_SECRET_FILE, SCOPES)
