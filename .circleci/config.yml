@@ -42,11 +42,11 @@ jobs:
           path: ~/project
       - node/install-packages:
           pkg-manager: npm
-          app-dir: ~/project/react-app
+          app-dir: ~/project/tasks-frontend
       - run:
           name: Build React app
           command: |
-            cd ~/project/react-app
+            cd ~/project/tasks-frontend/src
             npm run build
       - run:
           name: Run React tests
