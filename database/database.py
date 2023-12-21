@@ -1,4 +1,8 @@
 import sqlite3
+import os
+
+here = os.path.dirname(os.path.abspath(__file__))
+db_filename = os.path.join(here, 'tasks.db')
 
 class DatabaseClass:
     _TABLE_NAME = "Tasks"
@@ -19,7 +23,7 @@ class DatabaseClass:
     # Initialise variables and connect to the database
     def Connect_to_Database(self): 
         try:
-            self._connection = sqlite3.connect('tasks.db')
+            self._connection = sqlite3.connect(db_filename)
             self._cursor = self._connection.cursor()
         except sqlite3.Error as er:
             print('SQLite error: %s' % (' '.join(er.args)))
@@ -39,6 +43,7 @@ class DatabaseClass:
 
     # Creates table 'Tasks'
     def Create_Table(self):
+        self.Delete_Table()
         sql_create_table_command = "CREATE TABLE Tasks("
         for column_name,column_type in self._TABLE_COLUMNS.items():
             sql_create_table_command += "'" + column_name + "' " + column_type + ", "

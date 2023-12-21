@@ -1,11 +1,16 @@
 import json
 from database import DatabaseClass
+import os
 
-f = open('database/jsonOutput')
+here = os.path.dirname(os.path.abspath(__file__))
+db_filename = os.path.join(here, 'jsonOutput')
+
+f = open(db_filename)
 
 data = json.load(f)
 db = DatabaseClass()
 db.Connect_to_Database()
+db.Create_Table()
 
 for i in data["items"]:
     taskID = i["id"]
@@ -23,10 +28,6 @@ for i in data["items"]:
         taskCompleted = None
     
     db.Add_Record(taskID, taskEtag, taskTitle, taskStatus, taskUpdated, taskDue, taskCompleted)
-
-records = db.Get_Records_All()
-for record in records:
-    print(record)
 
 db.Close_Connection()
 f.close()
