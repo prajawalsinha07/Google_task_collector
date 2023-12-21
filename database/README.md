@@ -34,11 +34,14 @@ Adds new record into table 'Tasks'. taskID is primary key. All parameters need t
 **Update_Record(taskID:str, newtaskEtag:str, newtaskTitle:str, newtaskStatus:str, newtimeUpdated:str, newtimeDue:str, newTimeCompleted:str)**  
 Updates an existing record identified via taskID. Leave a parameter as "" if it doesn't have to be changed.
 
-**Delete_Record(taskID:int)**  
+**Delete_Record(taskID:str)**  
 Deletes a record identified via taskID.
 
 **Get_Records_All()**  
 Returns a list of all records. Each record is a tuple.
+
+**Get_Record_ID(taskID:int)**  
+Returns a record with same taskID as provided. Record is a tuple.
 
 **Get_Records_Status(taskStatus:str)**  
 Returns a list of all records with the same taskStatus as provided. Each record is a tuple.

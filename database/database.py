@@ -83,7 +83,7 @@ class DatabaseClass:
         self._execute_sql_command(sql_update_record_command)
 
     # Deletes a record identified via taskID
-    def Delete_Record(self,taskID:int):
+    def Delete_Record(self,taskID:str):
         sql_remove_record_command = "DELETE FROM Tasks WHERE taskID='" + taskID + "';"
         self._execute_sql_command(sql_remove_record_command)
 
@@ -92,6 +92,12 @@ class DatabaseClass:
         sql_get_records_all_command = "SELECT * FROM Tasks"
         records = self._cursor.execute(sql_get_records_all_command).fetchall()
         return records
+    
+    # Returns a record with same taskID as provided. Record is a tuple.
+    def Get_Record_ID(self,taskID:str):
+        sql_get_record_id_command = "SELECT * FROM Tasks WHERE taskID='" + taskID + "';"
+        record = self._cursor.execute(sql_get_record_id_command).fetchone()
+        return record
 
     # Returns a list of all records with the same taskStatus as provided. Each record is a tuple
     def Get_Records_Status(self, taskStatus:str):
