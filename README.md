@@ -21,15 +21,14 @@ Google Tasks Collector is a web application designed to consolidate and manage t
 ### Google Cloud
 To run the backend code, you need to generate a key for OAuth 2.0 credentials.
 
-After registering for a Google Cloud account, do the following: 
-- Create a new project 
-- Go to APIs & Services, and click Enable APIs and Services
-- Search for "Google Tasks API"
-- Click to enable
-- Navigate to the APIs & Services page, accessible from the side menu
-- On the Credentials tab, click Create Credentials > OAuth Client ID
-- This is a web application.
-- For more information, see [how to authorize credentials for a web application on GCP](https://developers.google.com/tasks/quickstart/js#authorize_credentials_for_a_web_application).
+After registering for a Google Cloud account, follow these steps: 
+- Create a new project on https://developers.google.com/
+- Go to APIs & Services, and Enable the API
+- Configure the OAuth consent screen
+- Authorize credentials for a web application
+- Create an API key
+- Set and Run your code
+- For a more detailed explaination, see [how to authorize credentials for a web application on GCP](https://developers.google.com/tasks/quickstart/js#authorize_credentials_for_a_web_application).
 
 ![An image showing the Google Cloud dashboard. A project named "Google task collector" is open. In the credentials tab, there is an "OAuth 2.0 Client IDs" section, which currently lists one client ID for the Google Tasks application.](./docs/images/Google_Cloud_dashboard.png)
 
