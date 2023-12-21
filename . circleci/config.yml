@@ -1,29 +1,47 @@
 version: 2.1
+
 orbs:
-  node: circleci/node@3.0.0
+  node: circleci/node@4.1.0
+  python: circleci/python@1.2.0
+
 jobs:
-  build:
+  build-and-test-python:
     docker:
-      - image: node:11.10.1
-
-    working_directory: ~/repo
-
+      - image: cimg/python:3.10
     steps:
-      - checkout
+      - checkout:
+          path: ~/Backend
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Run Python Tests
+          command: |
+            cd ~/Backend/
+            python -m unittest google_service-test
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
+  build-and-test-react:
+    docker:
+      - image: cimg/node:14.17
+    steps:
+      - checkout:
+          path: ~/project
+      - node/install-packages:
+          pkg-manager: npm
+          app-dir: ~/project/react-app
+      - run:
+          name: Build React app
+          command: |
+            cd ~/project/react-app
+            npm run build
+      - run:
+          name: Run React tests
+          command: |
+            cd ~/project/react-app
+            npm test
 
-      - run: npm install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: npm run test
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build-and-test-python
+      - build-and-test-react
