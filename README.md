@@ -54,10 +54,15 @@ After this, you should be ready to set up the backend and database.
 2. Navigate to the [backend](./Backend/) directory.
 3. Run the Flask application: `python app.py`
 
+![Scraping data from google tasks using the google tasks collector API](./docs/images/Datascrap.png)
+
 ### Frontend Setup
 1. Navigate to the [frontend](./tasks-frontend/) directory.
 2. Install the necessary npm packages: `npm install`
 3. Start the React application: `npm start`
+
+![Integrating the output on a dashboard](./docs/images/Frontend.png)
+![The frontend offers a few functionalities to filter data based on source, search based on title and a functionality to mark tasks as complete from the frontend](./docs/images/FrontendFilter.png)
 
 The app should run at `localhost:5000`.
 
