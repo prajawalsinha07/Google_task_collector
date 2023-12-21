@@ -16,6 +16,7 @@ jobs:
       - run:
           name: Run Python Tests
           command: |
+            .venv/bin/activate
             python3 ./database/jsonParser.py
             python -m unittest Backend/google_service-test.py
 
