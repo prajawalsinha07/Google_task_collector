@@ -10,7 +10,7 @@ jobs:
       - image: cimg/python:3.10
     steps:
       - checkout:
-          path: ~/.
+          path: ~/project
       - python/install-packages:
           pkg-manager: pip
       - run:
