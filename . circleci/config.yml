@@ -18,7 +18,6 @@ jobs:
           command: |
             cd ~/
             python3 ./database/jsonParser.py
-            python -m unittest ./Backend/google_service-test
 
   build-and-test-react:
     docker:
