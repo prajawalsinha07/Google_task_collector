@@ -51,7 +51,7 @@ jobs:
       - run:
           name: Run React tests
           command: |
-            cd ~/project/react-app
+            cd ~/project/tasks-frontend/tests/
             npm test
 
 workflows:
