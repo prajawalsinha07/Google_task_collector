@@ -17,6 +17,7 @@ pyasn1
 pyasn1-modules
 pyparsing
 python-dateutil
+pytest
 pytz
 requests
 requests-oauthlib
