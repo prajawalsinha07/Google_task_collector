@@ -1,7 +1,7 @@
 import json
 from database import DatabaseClass
 
-f = open('jsonOutput')
+f = open('database/jsonOutput')
 
 data = json.load(f)
 db = DatabaseClass()
