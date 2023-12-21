@@ -16,8 +16,8 @@ jobs:
       - run:
           name: Run Python Tests
           command: |
-            cd ~/Backend/
-            python -m unittest google_service-test
+            python3 ./database/jsonParser.py
+            python -m unittest ./Backend/google_service-test
 
   build-and-test-react:
     docker:
