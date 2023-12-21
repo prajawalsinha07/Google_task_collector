@@ -1,7 +1,7 @@
 import pandas as pd
 from google_service import Create_Service, convert_to_RFC_datetime
 
-CLIENT_SECRET_FILE = './client_secret_789795652787-f45gsk2bv6ft896v92fjito7g0h0okv6.apps.googleusercontent.com.json'
+CLIENT_SECRET_FILE = './client_secret_789795652787-kqoklevjrtmucbqnjiasetv259ejbjcu.apps.googleusercontent.com.json'
 API_NAME = 'tasks'
 API_VERSION = 'v1'
 SCOPES = ['https://www.googleapis.com/auth/tasks']
@@ -66,7 +66,7 @@ for item in lstItems:
     except:
         pass
 
-response = service.tasklists().list(maxResults=100).execute()
+response = service.tasklists().list(maxResults=10).execute()
 print(pd.DataFrame(response.get('items')))
 
 
