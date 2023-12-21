@@ -18,6 +18,21 @@ jobs:
           command: |
             python3 ./database/jsonParser.py
             python -m unittest Backend/google_service-test.py
+  
+
+  build-and-test-database:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - checkout:
+          path: ~/project
+      - python/install-packages:
+          pkg-manager: pip
+      - run:
+          name: Run Python Tests
+          command: |
+            python3 ./database/jsonParser.py
+            python -m unittest database/test_database.py
 
   build-and-test-react:
     docker:
@@ -44,4 +59,5 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test-python
+      - build-and-test-database
       - build-and-test-react
