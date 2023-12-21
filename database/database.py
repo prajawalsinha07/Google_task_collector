@@ -1,81 +1,106 @@
 import sqlite3
 
-TABLE_NAME = "Tasks"
-TABLE_COLUMNS = {
-    "taskID":"INTEGER PRIMARY KEY",
-    "taskSource":"VARCHAR(255)",
-    "taskDescription":"VARCHAR(255)",
-    "taskState":"VARCHAR(255)",
-    "timeAcquired":"DATE",
-    "timeCompleted":"DATE"}
+class DatabaseClass:
+    _TABLE_NAME = "Tasks"
+    _TABLE_COLUMNS = {
+        "taskID":"VARCHAR(255) PRIMARY KEY",
+        "taskEtag":"VARCHAR(255)",
+        "taskTitle":"VARCHAR(255)",
+        "taskStatus":"VARCHAR(255)",
+        "timeUpdated":"DATETIME",
+        "timeDue":"DATETIME",
+        "timeCompleted":"DATETIME"}
 
-connection = sqlite3.connect('tasks.db')
 
-cursor = connection.cursor()
+    def __init__(self) -> None:
+        _connection = None
+        _cursor = None
 
-def Execute_sql_command(command:str):
-    try:
-        cursor.execute(command)
-        connection.commit()
-    except sqlite3.Error as er:
-        print('SQLite error: %s' % (' '.join(er.args)))
+    # Initialise variables and connect to the database
+    def Connect_to_Database(self): 
+        try:
+            self._connection = sqlite3.connect('tasks.db')
+            self._cursor = self._connection.cursor()
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+    
+    # Close connection to the database
+    def Close_Connection(self):
+        self._connection.close()
+    
+    # Internal function not meant for API use. Executes sql queries
+    def _execute_sql_command(self, command:str):
+        try:
+            self._cursor.execute(command)
+            self._connection.commit()
+        except sqlite3.Error as er:
+            print('SQLite error: %s' % (' '.join(er.args)))
+            print("Error Command:", command)
 
-def Create_Table():
-    sql_create_table_command = "CREATE TABLE Tasks("
-    for column_name,column_type in TABLE_COLUMNS.items():
-        sql_create_table_command += column_name + " " + column_type + ", "
-    sql_create_table_command = sql_create_table_command[:-2] + ");"
-    Execute_sql_command(sql_create_table_command)
-    #print(sql_create_table_command)
+    # Creates table 'Tasks'
+    def Create_Table(self):
+        sql_create_table_command = "CREATE TABLE Tasks("
+        for column_name,column_type in self._TABLE_COLUMNS.items():
+            sql_create_table_command += "'" + column_name + "' " + column_type + ", "
+        sql_create_table_command = sql_create_table_command[:-2] + ");"
+        self._execute_sql_command(sql_create_table_command)
 
-def Delete_Table():
-    sql_drop_table_command = "DROP TABLE Tasks"
-    Execute_sql_command(sql_drop_table_command)
-    #print(sql_drop_table_command)
+    # Deletes table 'Tasks'
+    def Delete_Table(self):
+        sql_drop_table_command = "DROP TABLE Tasks"
+        self._execute_sql_command(sql_drop_table_command)
 
-def Add_Record(taskID:int, taskSource:str, taskDescription:str, taskState:str, timeAcquired:str, timeCompleted:str):
-    sql_add_record_command = "INSERT INTO Tasks VALUES ("
-    sql_add_record_command += str(taskID) + ', "' + taskSource + '", "' + taskDescription + '", "' + taskState + '", "' + timeAcquired 
-    if timeCompleted:
-       sql_add_record_command += '", "' + timeCompleted + '");'
-    else:
-        sql_add_record_command += '", NULL);'
-    Execute_sql_command(sql_add_record_command)
-    #print(sql_add_record_command)
+    # Adds new record into table 'Tasks'. taskID is primary key. All parameters need to be formatted as sql values
+    def Add_Record(self, taskID:str, taskEtag:str, taskTitle:str, taskStatus:str, timeUpdated:str, timeDue:str, timeCompleted:str):
+        sql_add_record_command = "INSERT INTO Tasks VALUES ("
+        sql_add_record_command += "'" + taskID + "', '" + taskEtag + "', '" + taskTitle + "', '" + taskStatus + "', '" + timeUpdated + "', "
+        if timeDue:
+            sql_add_record_command += "'" + timeDue + "', "
+        else:
+            sql_add_record_command += "NULL, "
+        if timeCompleted:
+            sql_add_record_command += "'" + timeCompleted + "');"
+        else:
+            sql_add_record_command += "NULL);"
+        self._execute_sql_command(sql_add_record_command)
 
-def Delete_Record(taskID:int):
-    sql_remove_record_command = "DELETE FROM Tasks WHERE taskID=" + str(taskID) + ";"
-    Execute_sql_command(sql_remove_record_command)
-    #print(sql_remove_record_command)
+    # Updates an existing record identified via taskID. Leave a parameter as "" if it doesn't have to be changed
+    def Update_Record(self, taskID:str, newtaskEtag:str, newtaskTitle:str, newtaskStatus:str, newtimeUpdated:str, newtimeDue:str, newTimeCompleted:str):
+        sql_update_record_command = "UPDATE Tasks SET "
+        if newtaskEtag != "":
+            sql_update_record_command += "taskEtag = '" + newtaskEtag + "', "
+        if newtaskTitle != "":
+            sql_update_record_command += "taskTitle = '" + newtaskTitle + "', "
+        if newtaskStatus != "":
+            sql_update_record_command += "taskStatus = '" + newtaskStatus + "', "
+        if newtimeUpdated != "":
+            sql_update_record_command += "timeUpdated = '" + newtimeUpdated + "', "
+        if newtimeDue != "":
+            sql_update_record_command += "timeDue = '" + newtimeDue + "', "
+        if newTimeCompleted != "":
+            sql_update_record_command += "timeCompleted = '" + newTimeCompleted + "', "
+        sql_update_record_command = sql_update_record_command[:-2] + " WHERE taskID = '" + taskID + "';"
+        self._execute_sql_command(sql_update_record_command)
 
-def Get_Records_All():
-    sql_get_records_all_command = "SELECT * FROM Tasks"
-    records = cursor.execute(sql_get_records_all_command).fetchall()
-    for record in records:
-        print(record)
-    #print(sql_get_records_all_command)
+    # Deletes a record identified via taskID
+    def Delete_Record(self,taskID:str):
+        sql_remove_record_command = "DELETE FROM Tasks WHERE taskID='" + taskID + "';"
+        self._execute_sql_command(sql_remove_record_command)
 
-def Get_Records_State(taskState:str):
-    sql_get_records_state_command = "SELECT * FROM Tasks WHERE taskState='" + taskState +"';"
-    records = cursor.execute(sql_get_records_state_command).fetchall()
-    for record in records:
-        print(record)
-    #print(sql_get_records_state_command)
+    # Returns a list of all records. Each record is a tuple
+    def Get_Records_All(self):
+        sql_get_records_all_command = "SELECT * FROM Tasks"
+        records = self._cursor.execute(sql_get_records_all_command).fetchall()
+        return records
+    
+    # Returns a record with same taskID as provided. Record is a tuple.
+    def Get_Record_ID(self,taskID:str):
+        sql_get_record_id_command = "SELECT * FROM Tasks WHERE taskID='" + taskID + "';"
+        record = self._cursor.execute(sql_get_record_id_command).fetchone()
+        return record
 
-if(len(cursor.execute("SELECT name FROM sqlite_schema WHERE type='table' AND name='Tasks';").fetchall())<1):
-    Create_Table()
-
-# TEMP TESTING CODE
-Add_Record(1,"Google Docs","Reply to comment","Pending","2023-12-17","")
-Add_Record(2,"Google Drive","Edit comment","Completed","2023-12-17","2023-12-19")
-Add_Record(3,"Google Docs","Reply to comment","Pending","2023-12-17","")
-Add_Record(4,"Google Drive","Edit comment","Completed","2023-12-17","2023-12-19")
-Get_Records_All()
-print("")
-Get_Records_State("Completed")
-print("")
-Delete_Record(3)
-Delete_Record(4)
-Get_Records_All()
-
-connection.close()
+    # Returns a list of all records with the same taskStatus as provided. Each record is a tuple
+    def Get_Records_Status(self, taskStatus:str):
+        sql_get_Records_Status_command = "SELECT * FROM Tasks WHERE taskStatus='" + taskStatus +"';"
+        records = self._cursor.execute(sql_get_Records_Status_command).fetchall()
+        return records
