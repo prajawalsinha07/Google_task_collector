@@ -16,7 +16,6 @@ jobs:
       - run:
           name: Run Python Tests
           command: |
-            cd ~/
             python3 ./database/jsonParser.py
 
   build-and-test-react:
