@@ -17,6 +17,7 @@ jobs:
           name: Run Python Tests
           command: |
             python3 ./database/jsonParser.py
+            python -m unittest Backend/google_service-test.py
 
   build-and-test-react:
     docker:
